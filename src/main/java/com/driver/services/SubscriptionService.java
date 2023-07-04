@@ -70,13 +70,14 @@ public class SubscriptionService {
 
             subscription.setSubscriptionType(SubscriptionType.PRO);
         }
+        int pastAmount = subscription.getTotalAmountPaid();
 
         subscription.setTotalAmountPaid(totalAmount);
 
         user.setSubscription(subscription);
         userRepository.save(user);
 
-        return totalAmount - subscription.getTotalAmountPaid();
+        return totalAmount - pastAmount;
     }
 
     private int getTotalAmountAccordingToSubscription(SubscriptionType subscriptionType, int noOfScreensSubscribed) {
