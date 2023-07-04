@@ -54,11 +54,12 @@ public class WebSeriesService {
         SubscriptionType subscriptionType = webSeriesEntryDto.getSubscriptionType();
         Integer productionHouseId = webSeriesEntryDto.getProductionHouseId();
 
-        ProductionHouse productionHouse = productionHouseRepository.findById(productionHouseId).get();
         WebSeries webSeries = webSeriesRepository.findBySeriesName(seriesName);
 
         if (webSeries != null)
             throw new Exception("Series is already present");
+
+        ProductionHouse productionHouse = productionHouseRepository.findById(productionHouseId).get();
 
         webSeries = new WebSeries(seriesName, ageLimit, rating, subscriptionType);
         webSeries.setProductionHouse(productionHouse);
