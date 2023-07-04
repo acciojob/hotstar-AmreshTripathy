@@ -65,14 +65,14 @@ public class WebSeriesService {
 
         webSeries = webSeriesRepository.save(webSeries);
 
-        setTotalRatingOfProductionHouse(productionHouse, rating);
         productionHouse.getWebSeriesList().add(webSeries);
+        setTotalRatingOfProductionHouse(productionHouse);
         productionHouseRepository.save(productionHouse);
 
         return webSeries.getId();
     }
 
-    private void setTotalRatingOfProductionHouse(ProductionHouse productionHouse, double curRating) {
+    private void setTotalRatingOfProductionHouse(ProductionHouse productionHouse) {
         double total = 0;
         int count = 0;
 
@@ -81,7 +81,7 @@ public class WebSeriesService {
             count++;
         }
 
-        double finalRating = (total + curRating) / (count + 1);
+        double finalRating = total / count;
         productionHouse.setRatings(finalRating);
     }
 }
