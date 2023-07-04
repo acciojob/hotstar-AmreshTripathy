@@ -46,11 +46,13 @@ public class WebSeriesService {
         webSeries.setRating(rating);
         webSeries.setSubscriptionType(subscriptionType);
 
+        webSeries = webSeriesRepository.save(webSeries);
+
         setTotalRatingOfProductionHouse(productionHouse, rating);
         webSeriesList.add(webSeries);
         productionHouseRepository.save(productionHouse);
 
-        return null;
+        return webSeries.getId();
     }
 
     private void setTotalRatingOfProductionHouse(ProductionHouse productionHouse, double curRating) {
