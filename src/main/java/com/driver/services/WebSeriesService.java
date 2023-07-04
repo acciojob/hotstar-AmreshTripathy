@@ -54,14 +54,12 @@ public class WebSeriesService {
 
     private void setTotalRatingOfProductionHouse(ProductionHouse productionHouse) {
         double total = 0;
-        int count = 0;
 
         for (WebSeries webSeries : productionHouse.getWebSeriesList()) {
             total += webSeries.getRating();
-            count++;
         }
 
-        double finalRating = total / count;
+        double finalRating = total / productionHouse.getWebSeriesList().size();
         productionHouse.setRatings(finalRating);
     }
 }
