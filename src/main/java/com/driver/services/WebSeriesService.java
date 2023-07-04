@@ -27,52 +27,49 @@ public class WebSeriesService {
         //use function written in Repository Layer for the same
         //Dont forget to save the production and webseries Repo
 
-        WebSeries webSeries= webSeriesRepository.findBySeriesName(webSeriesEntryDto.getSeriesName());
-        if (webSeries!=null){
-            throw new Exception("Series is already present");
-        }
-
-        ProductionHouse productionHouse=productionHouseRepository.findById(webSeriesEntryDto.getProductionHouseId()).get();
-
-        WebSeries webSeries1=new WebSeries(
-                webSeriesEntryDto.getSeriesName(),webSeriesEntryDto.getAgeLimit(),
-                webSeriesEntryDto.getRating(),webSeriesEntryDto.getSubscriptionType()
-        );
-        webSeries1.setProductionHouse(productionHouse);
-        webSeries1= webSeriesRepository.save(webSeries1);
-
-        productionHouse.setRatings(webSeriesEntryDto.getRating());
-        productionHouse.getWebSeriesList().add(webSeries1);
-        productionHouseRepository.save(productionHouse);
-
-        return webSeries1.getId();
-
-
-//        String seriesName = webSeriesEntryDto.getSeriesName();
-//        int ageLimit = webSeriesEntryDto.getAgeLimit();
-//        double rating = webSeriesEntryDto.getRating();
-//        SubscriptionType subscriptionType = webSeriesEntryDto.getSubscriptionType();
-//        Integer productionHouseId = webSeriesEntryDto.getProductionHouseId();
-//
-//        ProductionHouse productionHouse = productionHouseRepository.findById(productionHouseId).get();
-//        WebSeries webSeries = webSeriesRepository.findBySeriesName(seriesName);
-//
-//        if (webSeries != null)
+//        WebSeries webSeries= webSeriesRepository.findBySeriesName(webSeriesEntryDto.getSeriesName());
+//        if (webSeries!=null){
 //            throw new Exception("Series is already present");
+//        }
 //
-//        webSeries.setSeriesName(seriesName);
-//        webSeries.setAgeLimit(ageLimit);
-//        webSeries.setRating(rating);
-//        webSeries.setSubscriptionType(subscriptionType);
-//        webSeries.setProductionHouse(productionHouse);
+//        ProductionHouse productionHouse=productionHouseRepository.findById(webSeriesEntryDto.getProductionHouseId()).get();
 //
-//        webSeries = webSeriesRepository.save(webSeries);
+//        WebSeries webSeries1=new WebSeries(
+//                webSeriesEntryDto.getSeriesName(),webSeriesEntryDto.getAgeLimit(),
+//                webSeriesEntryDto.getRating(),webSeriesEntryDto.getSubscriptionType()
+//        );
+//        webSeries1.setProductionHouse(productionHouse);
+//        webSeries1= webSeriesRepository.save(webSeries1);
 //
-//        setTotalRatingOfProductionHouse(productionHouse, rating);
-//        productionHouse.getWebSeriesList().add(webSeries);
+//        productionHouse.setRatings(webSeriesEntryDto.getRating());
+//        productionHouse.getWebSeriesList().add(webSeries1);
 //        productionHouseRepository.save(productionHouse);
 //
-//        return webSeries.getId();
+//        return webSeries1.getId();
+
+
+        String seriesName = webSeriesEntryDto.getSeriesName();
+        int ageLimit = webSeriesEntryDto.getAgeLimit();
+        double rating = webSeriesEntryDto.getRating();
+        SubscriptionType subscriptionType = webSeriesEntryDto.getSubscriptionType();
+        Integer productionHouseId = webSeriesEntryDto.getProductionHouseId();
+
+        ProductionHouse productionHouse = productionHouseRepository.findById(productionHouseId).get();
+        WebSeries webSeries = webSeriesRepository.findBySeriesName(seriesName);
+
+        if (webSeries != null)
+            throw new Exception("Series is already present");
+
+        webSeries = new WebSeries(seriesName, ageLimit, rating, subscriptionType);
+        webSeries.setProductionHouse(productionHouse);
+
+        webSeries = webSeriesRepository.save(webSeries);
+
+        setTotalRatingOfProductionHouse(productionHouse, rating);
+        productionHouse.getWebSeriesList().add(webSeries);
+        productionHouseRepository.save(productionHouse);
+
+        return webSeries.getId();
     }
 
     private void setTotalRatingOfProductionHouse(ProductionHouse productionHouse, double curRating) {
