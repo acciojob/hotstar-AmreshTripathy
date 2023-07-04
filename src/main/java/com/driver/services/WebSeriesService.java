@@ -43,6 +43,7 @@ public class WebSeriesService {
         webSeries.setAgeLimit(ageLimit);
         webSeries.setRating(rating);
         webSeries.setSubscriptionType(subscriptionType);
+        webSeries.setProductionHouse(productionHouse);
 
         webSeries = webSeriesRepository.save(webSeries);
 
