@@ -34,13 +34,11 @@ public class WebSeriesService {
         Integer productionHouseId = webSeriesEntryDto.getProductionHouseId();
 
         ProductionHouse productionHouse = productionHouseRepository.findById(productionHouseId).get();
+        WebSeries webSeries = webSeriesRepository.findBySeriesName(seriesName);
 
-        if (checkSeriesNameAlreadyPresent(seriesName, productionHouse))
+        if (webSeries != null)
             throw new Exception("Series is already present");
 
-        List<WebSeries> webSeriesList = productionHouse.getWebSeriesList();
-
-        WebSeries webSeries = new WebSeries();
         webSeries.setSeriesName(seriesName);
         webSeries.setAgeLimit(ageLimit);
         webSeries.setRating(rating);
@@ -49,7 +47,7 @@ public class WebSeriesService {
         webSeries = webSeriesRepository.save(webSeries);
 
         setTotalRatingOfProductionHouse(productionHouse, rating);
-        webSeriesList.add(webSeries);
+        productionHouse.getWebSeriesList().add(webSeries);
         productionHouseRepository.save(productionHouse);
 
         return webSeries.getId();
@@ -67,15 +65,4 @@ public class WebSeriesService {
         double finalRating = (total + curRating) / (count + 1);
         productionHouse.setRatings(finalRating);
     }
-
-    private boolean checkSeriesNameAlreadyPresent(String seriesName, ProductionHouse productionHouse) {
-
-        for (WebSeries webSeries : productionHouse.getWebSeriesList()) {
-            if (webSeries.getSeriesName().equalsIgnoreCase(seriesName))
-                return true;
-        }
-
-        return false;
-    }
-
 }
